@@ -8,11 +8,20 @@ const createCarIntoDB = async (car: Car) => {
 
 const getAllCarsFromDB = async () => {
   const result = await CarModel.find();
-
   return result;
 };
+
 const getSingleCarFromDB = async (id: string) => {
   const result = await CarModel.find({ _id: id });
+  return result;
+};
+
+const updateCarIntoDb = async (id: string, updatedCarData: Car) => {
+  const result = await CarModel.findByIdAndUpdate(
+    id,
+    { $set: updatedCarData },
+    { new: true, runValidators: true },
+  );
 
   return result;
 };
@@ -20,4 +29,5 @@ export const CarServices = {
   createCarIntoDB,
   getAllCarsFromDB,
   getSingleCarFromDB,
+  updateCarIntoDb,
 };

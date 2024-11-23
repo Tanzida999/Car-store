@@ -19,7 +19,7 @@ const carSchema = new Schema<Car>(
     inStock: { type: Boolean, required: true },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt fields
+    timestamps: true,
   },
 );
 
