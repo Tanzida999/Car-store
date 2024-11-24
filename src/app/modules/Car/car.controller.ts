@@ -56,19 +56,47 @@ const getSingleCarFromDB = async (req: Request, res: Response) => {
   }
 };
 
-// Update a car in the database
 const updateCar = async (req: Request, res: Response) => {
   try {
     const { carId } = req.params;
-    const updatedCarData = req.body.car; // Assuming the updated car data is passed in the 'car' object
+    const updatedCarData = req.body.car;
 
-    // Call the service to update the car
+    // Call service to update the car in DB
     const result = await CarServices.updateCarIntoDb(carId, updatedCarData);
+
+    if (result) {
+      // Successfully updated car
+      res.status(200).json({
+        success: true,
+        message: 'Car updated successfully',
+        data: result,
+      });
+    } else {
+      // Car not found, respond with 404
+      res.status(404).json({
+        success: false,
+        message: 'Car not found',
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    // Error occurred during update
+    res.status(500).json({
+      success: false,
+      message: 'Error updating car',
+    });
+  }
+};
+
+const deleteCar = async (req: Request, res: Response) => {
+  try {
+    const { carId } = req.params;
+    const result = await CarServices.deleteCarFromDB(carId);
 
     if (result) {
       res.status(200).json({
         success: true,
-        message: 'Car updated Successfully',
+        message: 'Car deleted successfully',
         data: result,
       });
     } else {
@@ -78,10 +106,10 @@ const updateCar = async (req: Request, res: Response) => {
       });
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({
       success: false,
-      message: 'Error updating car',
+      message: 'Error deleting car',
     });
   }
 };
@@ -91,4 +119,5 @@ export const CarControllers = {
   getAllCarsFromDB,
   getSingleCarFromDB,
   updateCar,
+  deleteCar,
 };

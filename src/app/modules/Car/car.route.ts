@@ -1,11 +1,13 @@
-import express from 'express';
+import { Router } from 'express';
 import { CarControllers } from './car.controller';
 
-const router = express.Router();
+const router = Router();
 
-//Will call conttroller function
+// Define routes for the cars module
 router.post('/create-car', CarControllers.createCar);
 router.get('/', CarControllers.getAllCarsFromDB);
 router.get('/:carId', CarControllers.getSingleCarFromDB);
-router.put('/:carId', CarControllers.updateCar);
+router.put('/update-car/:carId', CarControllers.updateCar);
+router.delete('/delete-car/:carId', CarControllers.deleteCar);
+
 export const CarRoutes = router;
